@@ -5,20 +5,19 @@ import {
   Layers, 
   ShieldAlert, 
   BrainCircuit, 
-  Settings, 
   User, 
   Bell, 
   Lock,
   Menu,
   Palette,
   ScrollText,
-  LayoutPanelLeft,
-  Component,
   Cpu,
-  ChevronRight,
   LayoutList,
-  Activity
+  Activity,
+  MessagesSquare
 } from 'lucide-react';
+import { ThemeProvider } from 'next-themes';
+
 import { Dashboard } from './components/Dashboard';
 import { MarketData } from './components/MarketData';
 import { Strategies } from './components/Strategies';
@@ -32,8 +31,6 @@ import { ActivityEvents } from './components/ActivityEvents';
 import { SystemStatus } from './components/SystemStatus';
 import { AssistantPanel } from './components/AssistantPanel';
 import { Logo, LogoFull } from './components/Logo';
-import { MessagesSquare } from 'lucide-react';
-import { ThemeProvider } from 'next-themes';
 import { ThemeToggle } from './components/ThemeToggle';
 import { LuxuryBackground } from './components/LuxuryBackground';
 
@@ -129,10 +126,10 @@ function AppContent() {
           <div className="pt-2">
             {sidebarOpen && <div className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-600">Restricted</div>}
             <button
-              onClick={() => { if (isOperator) { setCurrentPage('operator'); } else { const confirm = window.confirm("Requesting Operator Access..."); if (confirm) setIsOperator(true); } }}
+              onClick={() => { if (isOperator) { setCurrentPage('operator'); } else { const confirm = window.confirm("Requesting Operator Access requires elevated permissions. Proceed?"); if (confirm) setIsOperator(true); } }}
               className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${currentPage === 'operator' ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900' : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-900/50'}`}
             >
-              <Lock className={`h-4 w-4 shrink-0 ${isOperator ? 'text-neutral-400 dark:text-neutral-500' : 'text-neutral-300 dark:text-neutral-700'}`} />
+              <Lock className={`h-4 w-4 shrink-0 ${isOperator ? 'text-neutral-400 dark:text-neutral-50' : 'text-neutral-300 dark:text-neutral-700'}`} />
               {sidebarOpen && <span>Operator Mode</span>}
             </button>
           </div>
@@ -147,18 +144,17 @@ function AppContent() {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2"><span className="text-[10px] font-bold text-neutral-400 uppercase tracking-tight dark:text-neutral-600">Project:</span><span className="text-[10px] font-bold text-neutral-700 dark:text-neutral-300 uppercase">AlgoTrendy</span></div>
             <div className="h-4 w-px bg-neutral-100 dark:bg-neutral-800" />
-            <div className="flex items-center gap-2 rounded border border-emerald-100 bg-emerald-50 px-2 py-1 dark:bg-emerald-500/10 dark:border-emerald-500/20"><div className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span></div><span className="text-[10px] font-bold text-emerald-600 uppercase dark:text-emerald-400">Connected</span></div>
+            <div className="flex items-center gap-2 rounded border border-emerald-100 bg-emerald-50 px-2 py-1 dark:bg-emerald-500/10 dark:border-emerald-500/20"><div className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span></div><span className="text-[10px] font-bold text-emerald-600 uppercase dark:text-emerald-400">Gateway Connected</span></div>
           </div>
           <div className="flex items-center gap-4">
             <ThemeToggle /><button onClick={() => setIsAssistantOpen(true)} className="flex items-center gap-2 rounded border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-1.5 text-[10px] font-bold uppercase text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"><MessagesSquare className="h-4 w-4" />Assistant</button>
-            <div className="h-4 w-px bg-neutral-100 dark:bg-neutral-800" /><div className="flex items-center gap-2 px-3 py-1 bg-neutral-100 dark:bg-neutral-900 rounded text-[10px] font-bold text-neutral-600 dark:text-neutral-400">ENV: PRE-RESEARCH</div>
-            <button className="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"><Bell className="h-4 w-4" /></button>
+            <div className="h-4 w-px bg-neutral-100 dark:bg-neutral-800" /><button className="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"><Bell className="h-4 w-4" /></button>
           </div>
         </header>
         <div className="flex-1 flex flex-col overflow-y-auto p-8 max-w-7xl mx-auto w-full">{renderContent()}</div>
         <footer className="flex h-8 items-center justify-between border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950/80 dark:backdrop-blur-md px-8 text-[10px] font-medium text-neutral-400 dark:text-neutral-600 uppercase tracking-widest">
-          <div className="flex gap-6"><span>v5.0.0-P8 | 2025-12-23</span><span>Gateway: Nominal</span></div>
-          <div className="flex gap-4 items-center"><div className="flex items-center gap-1"><ShieldAlert className="h-3 w-3" /><span>Contract Locked</span></div><div className="h-2 w-2 rounded-full bg-neutral-400 dark:bg-neutral-700" /><span>Encrypted</span></div>
+          <div className="flex gap-6"><span>v5.0.0-P8 | 2025-12-30 UTC</span><span>Gateway: Nominal (12ms)</span></div>
+          <div className="flex gap-4 items-center"><span>Contract Locked</span><div className="h-2 w-2 rounded-full bg-neutral-400 dark:bg-neutral-700" /><span>Encrypted Session</span></div>
         </footer>
       </main>
       <AssistantPanel isOpen={isAssistantOpen} onClose={() => setIsAssistantOpen(false)} isAdmin={isOperator} />
